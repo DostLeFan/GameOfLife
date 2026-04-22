@@ -167,7 +167,7 @@ void Window::loadGrid(std::string const& gridName)
 
 void Window::newGrid()
 {
-	m_currentGrid = Grid(50, 50, 100, 100, 15, 1.f, true);
+	m_currentGrid = Grid(10, 10, 100, 100, 15, 1.f, true);
 	
 	if(m_game.isActive())
 		m_game.stop();
@@ -228,13 +228,13 @@ void Window::onNextStep()
 
 void Window::onStartStop()
 {
-	m_isStarted = !m_isStarted;
-	m_startStopBtn->setText(I18n::getInstance().t((m_isStarted ? "toolbar.stop" : "toolbar.start")));
-	
 	if(m_isStarted)
 		m_game.stop();
 	else
 		m_game.start();
+	
+	m_isStarted = !m_isStarted;
+	m_startStopBtn->setText(I18n::getInstance().t((m_isStarted ? "toolbar.stop" : "toolbar.start")));
 }
 
 void Window::onLocaleChanged(std::string const& locale)

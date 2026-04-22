@@ -85,33 +85,33 @@ jobs:
   # ============================================================
   # MACOS x86_64 (Intel)
   # ============================================================
-  build-macos-x86_64:
-    name: Build - macOS x86_64
-    runs-on: macos-13
+  # build-macos-x86_64:
+    # name: Build - macOS x86_64
+    # runs-on: macos-13
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    # steps:
+      # - name: Checkout
+        # uses: actions/checkout@v4
 
-      - name: Configure
-        run: cmake --preset release
+      # - name: Configure
+        # run: cmake --preset release
 
-      - name: Build
-        run: cmake --build --preset release
+      # - name: Build
+        # run: cmake --build --preset release
 
-      - name: Package
-        run: |
-          mkdir -p package
-          cp bin/release/GameOfLife package/
-          cp -r locales package/
-          cd package
-          zip -r ../GameOfLife-${{ github.ref_name }}-macos-x86_64.zip .
+      # - name: Package
+        # run: |
+          # mkdir -p package
+          # cp bin/release/GameOfLife package/
+          # cp -r locales package/
+          # cd package
+          # zip -r ../GameOfLife-${{ github.ref_name }}-macos-x86_64.zip .
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos-x86_64
-          path: GameOfLife-${{ github.ref_name }}-macos-x86_64.zip
+      # - name: Upload artifact
+        # uses: actions/upload-artifact@v4
+        # with:
+          # name: macos-x86_64
+          # path: GameOfLife-${{ github.ref_name }}-macos-x86_64.zip
 
   # ============================================================
   # WINDOWS (MSVC)
@@ -150,7 +150,7 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    needs: [build-linux, build-macos-arm64, build-macos-x86_64, build-windows]
+    needs: [build-linux, build-macos-arm64, build-windows] #, build-macos-x86_64]
 
     steps:
       - name: Checkout

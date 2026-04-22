@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New view for grid
 
+## [1.0.5] - 2026-04-22
+
+### Fixed
+
+- Removed, temporarily, MacOS x86_64 in CI, please build on your machine
+- Fixed size of Grid on click on "New" button
+- Fixed start/stop button
+
 ## [1.0.4] - 2026-04-22
 
 ### Fixed
