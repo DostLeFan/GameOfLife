@@ -18,7 +18,7 @@ include(FetchContent)
 # SFML
 message(STATUS "Downloading SFML...")
 
-set(SFML_BUILD_AUDIO TRUE CACHE BOOL "" FORCE)
+set(SFML_BUILD_AUDIO FALSE CACHE BOOL "" FORCE)
 set(SFML_BUILD_GRAPHICS TRUE CACHE BOOL "" FORCE)
 set(SFML_BUILD_WINDOW TRUE CACHE BOOL "" FORCE)
 set(SFML_BUILD_NETWORK FALSE CACHE BOOL "" FORCE)
@@ -60,19 +60,13 @@ FetchContent_MakeAvailable(TGUI)
 
 message(STATUS "TGUI downloaded.")
 
-# TGUI
-message(STATUS "Downloading tinyfiledialogs...")
+# tinyfiledialogs
+message(STATUS "Managing tinyfiledialogs...")
 
-FetchContent_Declare(
-	tinyfiledialogs
-	URL https://sourceforge.net/projects/tinyfiledialogs/files/tinyfiledialogs-current.zip/download
-)
+add_library(tinyfiledialogs STATIC third_party/tinyfiledialogs/tinyfiledialogs.c third_party/tinyfiledialogs/more_dialogs/tinyfd_moredialogs.c)
+target_include_directories(tinyfiledialogs PUBLIC third_party/tinyfiledialogs third_party/tinyfiledialogs/more_dialogs)
 
-FetchContent_MakeAvailable(tinyfiledialogs)
-add_library(tinyfiledialogs STATIC ${tinyfiledialogs_SOURCE_DIR}/tinyfiledialogs.c)
-target_include_directories(tinyfiledialogs PUBLIC ${tinyfiledialogs_SOURCE_DIR})
-
-message(STATUS "tinyfiledialogs downloaded.")
+message(STATUS "tinyfiledialogs managed.")
 
 # nlohmann/json
 message(STATUS "Downloading nlohmann/json...")
@@ -92,7 +86,6 @@ message(STATUS "nlohmann/json downloaded.")
 message(STATUS "Downloading spdlog...")
 
 set(SPDLOG_BUILD_ASYNC ON CACHE BOOL "" FORCE)
-# ou selon ta version :
 set(SPDLOG_ENABLE_ASYNC ON CACHE BOOL "" FORCE)
 
 FetchContent_Declare(
