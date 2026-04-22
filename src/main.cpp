@@ -23,11 +23,11 @@ int main()
 	}
 	catch(std::exception const& err)
 	{
-		std::cerr << err.what() << std::endl;
+		LOG_ERROR("Main : ERROR : An unexpected error occured : {}.", err.what());
 	}
 	catch(...)
 	{
-		std::cerr << "Unknown error." << std::endl;
+		LOG_ERROR("Main : ERROR : An unknown error occured.", err.what());
 	}
 	
 	return 0;

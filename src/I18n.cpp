@@ -70,7 +70,7 @@ std::string const& I18n::t(std::string const& key) const
 		}
 	}
 
-	return key; // Retourne la clé si rien trouvé
+	return key; // Retourne la clÃ© si rien trouvÃ©
 }
 
 std::string I18n::t(std::string const& key, std::unordered_map<std::string, std::string> const& vars) const
@@ -105,7 +105,7 @@ void I18n::loadFile(std::string const& locale, std::filesystem::path const& path
 
 	for (auto const& [key, val] : json.items()) {
 		if (!val.is_string())
-			throw std::runtime_error("Valeur non-string pour la clé \"" + key + "\" dans " + path.string());
+			throw std::runtime_error("Valeur non-string pour la clÃ© \"" + key + "\" dans " + path.string());
 
 		map.emplace(key, val.get<std::string>());
 	}
