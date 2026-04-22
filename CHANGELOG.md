@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New view for grid
 
+## [1.0.4] - 2026-04-22
+
+### Fixed
+
+- Fixed build CI for GitHub for MSVC, hoping it will work this time
+
 ## [1.0.3] - 2026-04-22
 
 ### Fixed

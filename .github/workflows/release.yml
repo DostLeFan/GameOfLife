@@ -128,7 +128,7 @@ jobs:
         run: cmake --preset release
 
       - name: Build
-        run: cmake --build --preset release
+        run: cmake --build --preset release --config Release
 
       - name: Package
         shell: pwsh
