@@ -27,7 +27,7 @@ int main()
 	}
 	catch(...)
 	{
-		LOG_ERROR("Main : ERROR : An unknown error occured.", err.what());
+		LOG_ERROR("Main : ERROR : An unknown error occured.");
 	}
 	
 	return 0;
