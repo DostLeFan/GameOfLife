@@ -1,0 +1,23 @@
+{
+	"toolbar.new": "Nouveau",
+	"toolbar.load": "Charger",
+	"toolbar.save": "Sauvegarder",
+	"toolbar.saveAs": "Enregistrer sous",
+	"toolbar.nextStep": "Prochain pas",
+	"toolbar.start": "Lancer",
+	"toolbar.stop": "Arrêter",
+	"overworld": "Overworld",
+	"dungeon": "Dungeon",
+	"cave": "Cave",
+	"warnbox.confirmDiscardChange.title": "Modifications non sauvegardées",
+	"warnbox.confirmDiscardChange.message": "Vous avez des modifications non sauvegardées. Voulez-vous continuer ?",
+	"filedialog.openDialog.title": "Charger une map",
+	"filedialog.openDialog.singleFilterDescription": "Fichiers de map",
+	"filedialog.saveDialog.title": "Sauvegarder une map",
+	"filedialog.saveDialog.singleFilterDescription": "Fichiers de map",
+	"messagebox.mapTypeChanged.title": "Changement de type de map détecté",
+	"messagebox.mapTypeChanged.message": "Que voulez-vous faire ?\n\nOui => Conversion (tiles invalides => vides)\n\nNon => Vider totalement la map\n\nOu annuler",
+	"dbe.widget.title": "Bordures de donjon",
+	"dbe.widget.exterior": "Style exterieur :",
+	"dbe.widget.vramRecoloring": "Utiliser la recoloration VRAM"
+}

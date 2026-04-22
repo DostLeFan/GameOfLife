@@ -1,0 +1,23 @@
+{
+	"toolbar.new": "New",
+	"toolbar.load": "Load",
+	"toolbar.save": "Save",
+	"toolbar.saveAs": "Save as",
+	"toolbar.nextStep": "Next step",
+	"toolbar.start": "Start",
+	"toolbar.stop": "Stop",
+	"overworld": "Overworld",
+	"dungeon": "Dungeon",
+	"cave": "Cave",
+	"warnbox.confirmDiscardChange.title": "Unsaved changes",
+	"warnbox.confirmDiscardChange.message": "You have unsaved changes. Continue ?",
+	"filedialog.openDialog.title": "Open map",
+	"filedialog.openDialog.singleFilterDescription": "Map files",
+	"filedialog.saveDialog.title": "Save map",
+	"filedialog.saveDialog.singleFilterDescription": "Map files",
+	"messagebox.mapTypeChanged.title": "Change in map type detected",
+	"messagebox.mapTypeChanged.message": "What would you like to do?\n\nYes => Convert (invalid tiles => empty)\n\nNo => Clear the map completely\n\nOr cancel",
+	"dbe.widget.title": "Dungeon Border",
+	"dbe.widget.exterior": "Exterior Style:",
+	"dbe.widget.vramRecoloring": "Use VRAM Recoloring"
+}
