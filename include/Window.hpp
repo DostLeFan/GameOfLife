@@ -29,6 +29,9 @@ class Window
 		tgui::Button::Ptr m_startStopBtn;
 		tgui::ComboBox::Ptr m_localeCombo;
 		FileService m_fileService;
+		sf::View m_worldView;
+		sf::Vector2f m_viewSize;
+		sf::FloatRect m_gridBounds;
 		
 		void setupGui();
 		void updateTranslations();

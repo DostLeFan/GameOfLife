@@ -134,7 +134,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path package
-          Copy-Item bin/release/GameOfLife.exe package/
+          Copy-Item bin/release/Release/GameOfLife.exe package/
           Copy-Item -Recurse locales package/
           Compress-Archive -Path package/* -DestinationPath "GameOfLife-${{ github.ref_name }}-windows-portable.zip"
 
