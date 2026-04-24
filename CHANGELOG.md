@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - New future toolbars space
 
+## [1.1.1] - 2026-04-24
+
+### Fixed
+
+- Fixed CI (again)
+- Fixed this changelog
+
 ## [1.1.0] - 2026-04-24
 
 ### Added
@@ -65,4 +72,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 10x10 cases grid
 - GitHub build workflow.
 
+[unreleased]: https://github.com/DostLeFan/GameOfLife/compare/v1.1.0...HEAD
+[1.1.1]: https://github.com/DostLeFan/GameOfLife/compare/v1.1.0...v1.1.1
+[1.1.0]: https://github.com/DostLeFan/GameOfLife/compare/v1.0.5...v1.1.0
+[1.0.5]: https://github.com/DostLeFan/GameOfLife/compare/v1.0.4...v1.0.5
+[1.0.4]: https://github.com/DostLeFan/GameOfLife/compare/v1.0.3...v1.0.4
+[1.0.3]: https://github.com/DostLeFan/GameOfLife/compare/v1.0.2...v1.0.3
+[1.0.2]: https://github.com/DostLeFan/GameOfLife/compare/v1.0.1...v1.0.2
+[1.0.1]: https://github.com/DostLeFan/GameOfLife/compare/v1.0.0...v1.0.1
 [v1.0.0]: https://github.com/DostLeFan/GameOfLife/releases/tag/v1.0.0

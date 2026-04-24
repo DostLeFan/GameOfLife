@@ -151,6 +151,9 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     needs: [build-linux, build-macos-arm64, build-windows] #, build-macos-x86_64]
+    
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
