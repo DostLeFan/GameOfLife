@@ -1,6 +1,6 @@
 #include "../include/Game.hpp"
 
-Game::Game(lluint delay) : RegularTask(delay), m_grid(nullptr) {}
+Game::Game(lluint delay) : RegularTask(delay), m_grid(nullptr), m_stepCount(0) {}
 
 Game::~Game()
 {
@@ -12,6 +12,8 @@ void Game::nextState()
 {
 	if(m_grid == nullptr)
 		return;
+	
+	std::lock_guard<std::mutex> lock(m_gridMutex);
 	
 	std::vector<std::vector<bool> > states;
 	
@@ -47,6 +49,11 @@ void Game::nextState()
 			currentCase.setAlive(states[x][y]);
 		}
 	}
+	
+	++m_stepCount;
+	
+	if(m_onStep)
+		m_onStep();
 }
 
 

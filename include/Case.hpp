@@ -25,6 +25,7 @@ class Case
 		inline void setAlive(bool isAlive) { m_isAlive = isAlive; }
 		
 		virtual void draw(sf::RenderWindow& win) const;
+		virtual void draw(sf::RenderTarget& target) const;
 		inline bool isAlive() const { return m_isAlive; }
 		
 		inline friend bool operator==(Case const& lhs, Case const& rhs) { return lhs.isEqual(rhs); }

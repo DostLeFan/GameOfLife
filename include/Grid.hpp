@@ -33,6 +33,7 @@ class Grid
 		inline void setToroidal(bool toroidal) { m_toroidal = toroidal; }
 		
 		virtual void draw(sf::RenderWindow& win) const;
+		virtual void draw(sf::RenderTarget& target) const;
 		inline bool isToroidal() const { return m_toroidal; }
 		bool isOver(int x, int y) const;
 		

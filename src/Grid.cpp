@@ -2,10 +2,17 @@
 
 #include <string>
 #include <stdexcept>
+#include "../include/Logger.hpp"
 
 Grid::Grid(unsigned int line, unsigned int col, int x, int y, unsigned int caseSize, float spacing, bool toroidal) : m_line(line), m_column(col), m_x(x), m_y(y), m_caseSize(caseSize), m_spacing(spacing), m_toroidal(toroidal)
 {
 	recreateCases();
+	LOG_INFO("Grid constructor.");
+	LOG_INFO("(x, y) = ({}, {})", m_x, m_y);
+	LOG_INFO("Line x Column = {}x{}", m_line, m_column);
+	LOG_INFO("Case size = {}", m_caseSize);
+	LOG_INFO("Spacing = {}", m_spacing);
+	LOG_INFO("Toroidal = {}", m_toroidal);
 }
 
 Grid::Grid(Grid const& src) : m_line(src.m_line), m_column(src.m_column), m_x(src.m_x), m_y(src.m_y), m_caseSize(src.m_caseSize), m_spacing(src.m_spacing), m_toroidal(src.m_toroidal), m_cases(src.m_cases) {}
@@ -109,6 +116,12 @@ void Grid::draw(sf::RenderWindow& win) const
 		temp.draw(target, states);*/
 		m_cases[i].draw(win);
 	}
+}
+
+void Grid::draw(sf::RenderTarget& target) const
+{
+	for(Case const& c : m_cases)
+		c.draw(target);
 }
 
 bool Grid::isOver(int x, int y) const

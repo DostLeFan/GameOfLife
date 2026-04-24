@@ -34,6 +34,23 @@ void Case::draw(sf::RenderWindow& win) const
 	win.draw(rect);
 }
 
+void Case::draw(sf::RenderTarget& target) const
+{
+	float border = 1.f;
+	
+	sf::RectangleShape borderRect(sf::Vector2f(m_width + border * 2, m_height + border * 2));
+	borderRect.setPosition({ m_x - border, m_y - border });
+	borderRect.setFillColor(sf::Color::Black);
+	
+	target.draw(borderRect);
+	
+	sf::RectangleShape rect({ static_cast<float>(m_width), static_cast<float>(m_height) });
+	rect.setPosition({ static_cast<float>(m_x), static_cast<float>(m_y) });
+	rect.setFillColor(m_isAlive ? sf::Color::Black : sf::Color::White);
+	
+	target.draw(rect);
+}
+
 
 std::ostream& operator<<(std::ostream& os, Case const& src)
 {

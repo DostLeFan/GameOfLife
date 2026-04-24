@@ -8,7 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- New view for grid
+
+- New future toolbars space
+
+## [1.1.0] - 2026-04-24
+
+### Added
+
+- Scrollable view of grid for large grid
+- A new space for options...
+
+### Fixed
+
+- Finished to remove, temporarily, MacOS x86_64 in CI, please build on your machine
+- Fixed stop of game thread on window closing
+- Cleaned locales translations (imported from an other personal project)
 
 ## [1.0.5] - 2026-04-22
 
