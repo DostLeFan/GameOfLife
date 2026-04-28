@@ -2,6 +2,7 @@
 #define DEF_WINDOW
 
 #include <string>
+#include <utility>
 #include "Grid.hpp"
 #include "Game.hpp"
 #include "FileService.hpp"
@@ -36,6 +37,8 @@ class Window
 		sf::Vector2f m_gridCanvasSize;
 		float m_offsetX;
 		std::atomic<bool> m_needsRedraw;
+		bool m_isDragging;
+		bool m_dragSetAlive;
 		
 		void setupGui();
 		void updateLayout();
@@ -46,6 +49,9 @@ class Window
 		void newGrid();
 		inline void saveUnsavedGrid(std::string const& randomName) { saveGrid("unsaved_" + randomName + ".bin"); }
 		
+		bool isMouseOnGrid(sf::Vector2f const& mousePos) const;
+		std::pair<int, int> getCellFromMouse(sf::Vector2f const& mousePos);
+		
 		void handleShortcuts(sf::Event const& event);
 		
 		void onNewGrid();
@@ -55,7 +61,9 @@ class Window
 		void onNextStep();
 		void onStartStop();
 		void onLocaleChanged(std::string const& locale);
-		void onLeftClick(float x, float y);
+		void onLeftButtonPressed(sf::Vector2f mousePos);
+		void onLeftButtonReleased(sf::Vector2f mousePos);
+		void onMouseMoved(sf::Vector2f mousePos);
 };
 
 #endif // DEF_WINDOW

@@ -2,11 +2,31 @@
 
 #include <fstream>
 #include <vector>
+#include <random>
 #include <stdexcept>
 #include "../include/I18n.hpp"
 #include "../include/Logger.hpp"
 
-Window::Window() : m_window(sf::VideoMode({1024, 768}), "Game of Life"), m_gui(m_window), m_currentGrid(150, 150, 0, 0, 15, 1.f, true), m_isStarted(false), m_game(100), m_offsetX(50), m_needsRedraw(false)
+long long unsigned int randomLLUINT(long long unsigned int min, long long unsigned int max)
+{
+	thread_local std::mt19937_64 engine{ std::random_device{}() };
+	std::uniform_int_distribution<long long unsigned int> dist{ min, max };
+
+	return dist(engine);
+}
+
+void takeScreenshot(sf::RenderWindow& window)
+{
+	std::string screenshotFileName = "screenshot-" + std::to_string(randomLLUINT(0, 1500)) + ".png";
+	sf::Texture screenshot(sf::Vector2u{ window.getSize().x, window.getSize().y });
+
+	screenshot.update(window);
+
+	if (screenshot.copyToImage().saveToFile(screenshotFileName))
+		LOG_INFO("Screenshot registered in file \"{}\"", screenshotFileName);
+}
+
+Window::Window() : m_window(sf::VideoMode({1024, 768}), "Game of Life"), m_gui(m_window), m_currentGrid(150, 150, 0, 0, 15, 1.f, true), m_isStarted(false), m_game(100), m_offsetX(50), m_needsRedraw(false), m_isDragging(false), m_dragSetAlive(false)
 {
 	setupGui();
 
@@ -56,20 +76,26 @@ void Window::run()
 			
 			if(sf::Event::MouseButtonPressed const* mouseBtn = event->getIf<sf::Event::MouseButtonPressed>())
 			{
+				sf::Vector2f mousePos(mouseBtn->position.x, mouseBtn->position.y);
+				
 				if(mouseBtn->button == sf::Mouse::Button::Left)
-				{
-					sf::Vector2f mousePos(mouseBtn->position.x, mouseBtn->position.y);
-					sf::Vector2f panelPos = m_scrollPanel->getPosition();
-					sf::Vector2f panelSize = m_scrollPanel->getSize();
-					float scrollbarSize = m_scrollPanel->getVerticalScrollbar()->getWidth();
-					
-					bool inPanel = (mousePos.x >= panelPos.x && mousePos.x < panelPos.x + panelSize.x && mousePos.y >= panelPos.y && mousePos.y < panelPos.y + panelSize.y);
-					bool onVerticalScrollbar = (mousePos.x >= panelPos.x + panelSize.x - scrollbarSize);
-					bool onHorizontalScrollbar = (mousePos.y >= panelPos.y + panelSize.y - scrollbarSize);
-					
-					if(inPanel && !onVerticalScrollbar && !onHorizontalScrollbar)
-						onLeftClick(mouseBtn->position.x, mouseBtn->position.y);
-				}
+					onLeftButtonPressed(mousePos);
+			}
+			
+			
+			if(sf::Event::MouseButtonReleased const* mouseBtn = event->getIf<sf::Event::MouseButtonReleased>())
+			{
+				sf::Vector2f mousePos(mouseBtn->position.x, mouseBtn->position.y);
+				
+				if(mouseBtn->button == sf::Mouse::Button::Left)
+					onLeftButtonReleased(mousePos);
+			}
+			
+			if(sf::Event::MouseMoved const* mouseMoved = event->getIf<sf::Event::MouseMoved>())
+			{
+				sf::Vector2f mousePos(mouseMoved->position.x, mouseMoved->position.y);
+				
+				onMouseMoved(mousePos);
 			}
 		}
 		
@@ -295,6 +321,39 @@ void Window::newGrid()
 }
 
 
+bool Window::isMouseOnGrid(sf::Vector2f const& mousePos) const
+{
+	sf::Vector2f panelPos = m_scrollPanel->getPosition();
+	sf::Vector2f panelSize = m_scrollPanel->getSize();
+	float scrollbarSize = m_scrollPanel->getVerticalScrollbar()->getWidth();
+	
+	bool inPanel = (mousePos.x >= panelPos.x && mousePos.x < panelPos.x + panelSize.x && mousePos.y >= panelPos.y && mousePos.y < panelPos.y + panelSize.y);
+	bool onVerticalScrollbar = (mousePos.x >= panelPos.x + panelSize.x - scrollbarSize);
+	bool onHorizontalScrollbar = (mousePos.y >= panelPos.y + panelSize.y - scrollbarSize);
+	
+	return (inPanel && !onVerticalScrollbar && !onHorizontalScrollbar);
+}
+
+std::pair<int, int> Window::getCellFromMouse(sf::Vector2f const& mousePos)
+{
+	sf::Vector2f panelPos = m_scrollPanel->getPosition();
+	sf::Vector2f canvasPos = m_gridCanvas->getPosition();
+	sf::Vector2f scrollOffset(
+		m_scrollPanel->getHorizontalScrollbar()->getValue(),
+		m_scrollPanel->getVerticalScrollbar()->getValue()
+	);
+	sf::Vector2f localPos = mousePos - panelPos - canvasPos + scrollOffset;
+	float step = m_currentGrid.getCaseSize() + m_currentGrid.getSpacing() * 2;
+	int col = static_cast<int>(localPos.x / step);
+	int row = static_cast<int>(localPos.y / step);
+	
+	if(col < 0 && col >= static_cast<int>(m_currentGrid.getColumn()) && row < 0 && row >= static_cast<int>(m_currentGrid.getLine()))
+		return {-1, -1};
+	
+	return {row, col};
+}
+
+
 void Window::handleShortcuts(sf::Event const& event)
 {
 	if (!event.is<sf::Event::KeyPressed>())
@@ -311,6 +370,8 @@ void Window::handleShortcuts(sf::Event const& event)
 			m_fileService.saveAs();
 		else if (key->control)
 			m_fileService.save();
+		else
+			takeScreenshot(m_window);
 	}
 	else if (key->control && key->code == sf::Keyboard::Key::O)
 		m_fileService.open();
@@ -363,32 +424,43 @@ void Window::onLocaleChanged(std::string const& locale)
 	I18n::getInstance().setLocale(locale);
 }
 
-void Window::onLeftClick(float x, float y)
+void Window::onLeftButtonPressed(sf::Vector2f mousePos)
 {
-	sf::Vector2f mousePos(x, y);
-	sf::Vector2f panelPos = m_scrollPanel->getPosition();
-	sf::Vector2f canvasPos = m_gridCanvas->getPosition();
-	sf::Vector2f scrollOffset(
-		m_scrollPanel->getHorizontalScrollbar()->getValue(),
-		m_scrollPanel->getVerticalScrollbar()->getValue()
-	);
-	sf::Vector2f localPos = mousePos - panelPos - canvasPos + scrollOffset;
-	
-	if(localPos.x >= 0 && localPos.x < m_gridCanvas->getSize().x && localPos.y >= 0 && localPos.y < m_gridCanvas->getSize().y)
+	if(isMouseOnGrid(mousePos))
 	{
-		float step = m_currentGrid.getCaseSize() + m_currentGrid.getSpacing() * 2;
-		int col = static_cast<int>(localPos.x / step);
-		int row = static_cast<int>(localPos.y / step);
+		m_isDragging = true;
+		auto [row, col] = getCellFromMouse(mousePos);
 		
-		if(col >= 0 && col < static_cast<int>(m_currentGrid.getColumn()) && row >= 0 && row < static_cast<int>(m_currentGrid.getLine()))
+		if(row >= 0 && col >= 0)
 		{
-			{
-				std::lock_guard<std::mutex> lock(m_game.getGridMutex());
-				Case& c = m_currentGrid(row, col);
-				c.setAlive(!c.isAlive());
-			}
-			
-			redrawCanvas();
+			std::lock_guard<std::mutex> lock(m_game.getGridMutex());
+			Case& c = m_currentGrid(row, col);
+			m_dragSetAlive = !c.isAlive();
+			c.setAlive(m_dragSetAlive);
 		}
+
+		redrawCanvas();
+	}
+}
+
+void Window::onLeftButtonReleased(sf::Vector2f mousePos)
+{
+	m_isDragging = false;
+}
+
+void Window::onMouseMoved(sf::Vector2f mousePos)
+{
+	if(m_isDragging && isMouseOnGrid(mousePos))
+	{
+		auto [row, col] = getCellFromMouse(mousePos);
+		
+		if(row >= 0 && col >= 0)
+		{
+			std::lock_guard<std::mutex> lock(m_game.getGridMutex());
+			Case& c = m_currentGrid(row, col);
+			c.setAlive(m_dragSetAlive);
+		}
+
+		redrawCanvas();
 	}
 }
